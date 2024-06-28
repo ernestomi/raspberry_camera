@@ -32,7 +32,7 @@ while True:
 
  #Detect face
  faces = face_classifier.detectMultiScale(
-  current_frame, scaleFactor=1.1, minNeighbors=7, minSize=(40, 40)
+  current_frame, scaleFactor=1.1, minNeighbors=5, minSize=(40, 40)
  )
  for (x, y, w, h) in faces:
   print('Face found')
