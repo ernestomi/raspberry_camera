@@ -15,6 +15,7 @@ def process_frame(frame):
  frame = imutils.resize(frame, width=500)
  gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
  gray = cv2.GaussianBlur(gray, (21, 21), 0)
+ gray = cv2.rotate(gray, cv2.ROTATE_90_COUNTERCLOCKWISE)
  return gray
 
 while True:
@@ -45,7 +46,7 @@ while True:
   # compute the bounding box for the contour
   (x, y, w, h) = cv2.boundingRect(c)
   # draw the bounding box on the frame
-  cv2.rectangle(threshold, (x, y), (x + w, y + h), (0, 255, 0), 2)
+  threshold = cv2.rectangle(threshold, (x, y), (x + w, y + h), (0, 255, 0), 2)
  
  if coutour_found:
   #Save the images
