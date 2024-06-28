@@ -46,7 +46,8 @@ while True:
   # compute the bounding box for the contour
   (x, y, w, h) = cv2.boundingRect(c)
   # draw the bounding box on the frame
-  threshold = cv2.rectangle(threshold, (x, y), (x + w, y + h), (0, 255, 0), 2)
+  current_frame = cv2.rectangle(
+   current_frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
  
  if coutour_found:
   #Save the images
