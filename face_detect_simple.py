@@ -22,7 +22,8 @@ def process_frame(frame):
  return gray
 
 # main ------------------------------------------------------------------------
-face_classifier = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+face_classifier = cv2.CascadeClassifier(
+ 'classifiers/haarcascade_frontalface_default.xml')
 
 while True:
  target_found = False
