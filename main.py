@@ -1,5 +1,6 @@
 import cv2
 import imutils
+from datetime import datetime
 from picamera2 import Picamera2
 
 picam2 = Picamera2()
@@ -40,12 +41,11 @@ while True:
   # compute the bounding box for the contour
   (x, y, w, h) = cv2.boundingRect(c)
   # draw the bounding box on the frame
-  cv2.rectangle(current_frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+  cv2.rectangle(threshold, (x, y), (x + w, y + h), (0, 255, 0), 2)
   #Save the images
-  cv2.imwrite('delta.jpg', delta)
-  cv2.imwrite('threshold.jpg', threshold)
-  cv2.imwrite('current_frame.jpg', current_frame)
-  cv2.imwrite('previous_frame.jpg', previous_frame)
-
-  exit()
+  folder = 'data/{}'.format(datetime.now().isoformat())
+  cv2.imwrite('{}/1-current_frame.jpg'.format(folder), current_frame)
+  cv2.imwrite('{}/2-previous_frame.jpg'.format(folder), previous_frame)
+  cv2.imwrite('{}/3-delta.jpg'.format(folder), delta)
+  cv2.imwrite('{}/4-threshold.jpg'.format(folder), threshold)
  
