@@ -10,9 +10,13 @@ picam2.start()
 
 current_frame = None
 
-def process_frame(frame):
- # resize the frame, convert it to grayscale, and blur it
+def capture_frame():
+ frame = picam2.capture_array()
  frame = imutils.resize(frame, width=500)
+ return frame
+
+def process_frame(frame):
+ # Grayscale and Blur
  gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
  gray = cv2.GaussianBlur(gray, (21, 21), 0)
  gray = cv2.rotate(gray, cv2.ROTATE_90_COUNTERCLOCKWISE)
@@ -21,7 +25,8 @@ def process_frame(frame):
 while True:
  coutour_found = False
  previous_frame = current_frame
- current_frame = process_frame(picam2.capture_array())
+ current_original_frame = capture_frame()
+ current_frame = process_frame(current_original_frame)
  if previous_frame is None:
   continue
  
@@ -45,14 +50,15 @@ while True:
   coutour_found = True
   # compute the bounding box for the contour
   (x, y, w, h) = cv2.boundingRect(c)
+  print('x: {}, y: {}, w: {}, h: {}'.format(x, y, w, h))
   # draw the bounding box on the frame
-  current_frame = cv2.rectangle(
-   current_frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+  cv2.rectangle(current_original_frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
  
  if coutour_found:
   #Save the images
   folder = 'data/{}'.format(datetime.now().strftime('%Y%m%d%H%M%S%f'))
   os.makedirs(folder)
+  cv2.imwrite('{}/0-original_frame.jpg'.format(folder), current_original_frame)
   cv2.imwrite('{}/1-current_frame.jpg'.format(folder), current_frame)
   cv2.imwrite('{}/2-previous_frame.jpg'.format(folder), previous_frame)
   cv2.imwrite('{}/3-delta.jpg'.format(folder), delta)
