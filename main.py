@@ -18,7 +18,7 @@ def process_frame(frame):
 while True:
  previous_frame = current_frame
  current_frame = process_frame(picam2.capture_array())
- if previous_frame == None:
+ if previous_frame is None:
   continue
  
  delta = cv2.absdiff(previous_frame, current_frame)
