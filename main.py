@@ -6,27 +6,28 @@ picam2 = Picamera2()
 picam2.configure(picam2.create_preview_configuration(main={"format": 'XRGB8888', "size": (640, 480)}))
 picam2.start()
 
-firstFrame = None
+current_frame = None
 
-while True:
- frame = picam2.capture_array()
+def process_frame(frame):
  # resize the frame, convert it to grayscale, and blur it
  frame = imutils.resize(frame, width=500)
  gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
  gray = cv2.GaussianBlur(gray, (21, 21), 0)
+ return gray
 
- # if the first frame is None, initialize it
- if firstFrame is None:
-  firstFrame = gray
+while True:
+ previous_frame = current_frame
+ current_frame = process_frame(picam2.capture_array())
+ if not previous_frame:
   continue
-
- frameDelta = cv2.absdiff(firstFrame, gray)
- thresh = cv2.threshold(frameDelta, 25, 255, cv2.THRESH_BINARY)[1]
+ 
+ delta = cv2.absdiff(previous_frame, current_frame)
+ threshold = cv2.threshold(delta, 25, 255, cv2.THRESH_BINARY)[1]
  # dilate the thresholded image to fill in holes, then find contours
  # on thresholded image
- thresh = cv2.dilate(thresh, None, iterations=2)
+ threshold = cv2.dilate(threshold, None, iterations=2)
  contours = cv2.findContours(
-  thresh.copy(), 
+  threshold.copy(), 
   cv2.RETR_EXTERNAL,
   cv2.CHAIN_APPROX_SIMPLE
  )
@@ -39,8 +40,12 @@ while True:
   # compute the bounding box for the contour
   (x, y, w, h) = cv2.boundingRect(c)
   # draw the bounding box on the frame
-  cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-  #Save the image
-  cv2.imwrite('motion_detected.jpg', frame)
+  cv2.rectangle(current_frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+  #Save the images
+  cv2.imwrite('delta.jpg', delta)
+  cv2.imwrite('threshold.jpg', threshold)
+  cv2.imwrite('current_frame.jpg', current_frame)
+  cv2.imwrite('previous_frame.jpg', previous_frame)
+
   exit()
  
