@@ -38,6 +38,7 @@ while True:
   # if the contour is too small, ignore it
   if cv2.contourArea(c) < 500:
    continue
+  print('contour found')
   # compute the bounding box for the contour
   (x, y, w, h) = cv2.boundingRect(c)
   # draw the bounding box on the frame
