@@ -41,6 +41,7 @@ def has_movement(previous_frame, current_frame):
  contours = imutils.grab_contours(contours)
  # loop over the contours
  for c in contours:
+  print(cv2.contourArea(c))
   # if the contour is too small, ignore it
   if cv2.contourArea(c) > 500:
    return True
@@ -64,7 +65,7 @@ while True:
   print('Movement detected')
  else:
   continue
- 
+
  current_frame = process_frame_for_face(current_original_frame)
  if has_faces(current_frame):
   print('Faces detected')
