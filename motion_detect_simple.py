@@ -38,12 +38,13 @@ def has_movement(previous_frame, current_frame):
    continue
   return True
 
+# main ------------------------------------------------------------------------
 while True:
  previous_frame = current_frame
  original_frame = capture_frame()
- current_frame = process_frame_for_motion(original_frame)
  if previous_frame is None:
   continue
+ current_frame = process_frame_for_motion(original_frame)
  if has_movement(previous_frame, current_frame):
   print('Movement detected')
   #Save the images
