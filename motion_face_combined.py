@@ -45,7 +45,7 @@ def has_movement(previous_frame, current_frame):
 
 def has_faces(frame):
  faces = face_classifier.detectMultiScale(
-  current_frame, scaleFactor=1.1, minNeighbors=11, minSize=(40, 40)
+  frame, scaleFactor=1.1, minNeighbors=11, minSize=(40, 40)
  )
  if len(faces) > 0:
   return True
