@@ -19,6 +19,5 @@ def capture_frame():
 current_original_frame = capture_frame()
 
 #Save the images
-folder = 'data/{}'.format(datetime.now().strftime('%Y%m%d%H%M%S%f'))
-os.makedirs(folder)
-cv2.imwrite('{}-original_frame.jpg'.format(folder), current_original_frame)
+base = 'data/{}'.format(datetime.now().strftime('%Y%m%d%H%M%S%f'))
+cv2.imwrite('{}-original_frame.jpg'.format(base), current_original_frame)
