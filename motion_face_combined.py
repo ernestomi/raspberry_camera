@@ -63,8 +63,8 @@ while True:
  else:
   continue
 
- current_frame = process_frame_for_face(original_frame)
- if has_faces(current_frame):
+ current_face_frame = process_frame_for_face(original_frame)
+ if has_faces(current_face_frame):
   print('Faces detected')
   folder = 'data/{}'.format(datetime.now().strftime('%Y%m%d%H%M%S%f'))
   os.makedirs(folder)
