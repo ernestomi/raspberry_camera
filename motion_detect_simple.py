@@ -13,7 +13,7 @@ current_frame = None
 def capture_frame():
  frame = picam2.capture_array()
  frame = imutils.resize(frame, width=500)
- frame = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
+ frame = cv2.rotate(frame, 0)
  return frame
 
 def process_frame(frame):
