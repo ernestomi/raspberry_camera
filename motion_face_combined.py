@@ -14,11 +14,11 @@ face_classifier = cv2.CascadeClassifier(
 
 def capture_frame():
  frame = picam2.capture_array()
- #frame = imutils.resize(frame, width=500)
  frame = cv2.rotate(frame, 0)
  return frame
 
 def process_frame_for_motion(frame):
+ frame = imutils.resize(frame, width=500)
  # Grayscale and Blur
  gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
  gray = cv2.GaussianBlur(gray, (21, 21), 0)
@@ -55,18 +55,18 @@ def has_faces(frame):
 current_frame = None
 while True:
  previous_frame = current_frame
- current_original_frame = capture_frame()
+ original_frame = capture_frame()
  if previous_frame is None:
   continue
- current_frame = process_frame_for_motion(current_original_frame)
+ current_frame = process_frame_for_motion(original_frame)
  if has_movement(previous_frame, current_frame):
   print('Movement detected')
  else:
   continue
 
- current_frame = process_frame_for_face(current_original_frame)
+ current_frame = process_frame_for_face(original_frame)
  if has_faces(current_frame):
   print('Faces detected')
   folder = 'data/{}'.format(datetime.now().strftime('%Y%m%d%H%M%S%f'))
   os.makedirs(folder)
-  cv2.imwrite('{}/0-original_frame.jpg'.format(folder), current_original_frame)
+  cv2.imwrite('{}/0-original_frame.jpg'.format(folder), original_frame)

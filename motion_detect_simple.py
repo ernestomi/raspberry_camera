@@ -41,7 +41,6 @@ def has_movement(previous_frame, current_frame):
   return True
 
 while True:
- coutour_found = False
  previous_frame = current_frame
  original_frame = capture_frame()
  contour_frame = resize_frame(original_frame)
