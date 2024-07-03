@@ -12,7 +12,7 @@ current_frame = None
 
 def capture_frame():
  frame = picam2.capture_array()
- frame = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
+ frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
  return frame
 
 # main ------------------------------------------------------------------------
