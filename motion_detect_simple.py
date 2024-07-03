@@ -25,15 +25,7 @@ def process_frame(frame):
  gray = cv2.GaussianBlur(gray, (21, 21), 0)
  return gray
 
-while True:
- coutour_found = False
- previous_frame = current_frame
- original_frame = capture_frame()
- contour_frame = resize_frame(original_frame)
- current_frame = process_frame(contour_frame)
- if previous_frame is None:
-  continue
- 
+def has_movement(previous_frame, current_frame):
  delta = cv2.absdiff(previous_frame, current_frame)
  threshold = cv2.threshold(delta, 25, 255, cv2.THRESH_BINARY)[1]
  # dilate the thresholded image to fill in holes, then find contours
@@ -50,22 +42,20 @@ while True:
   # if the contour is too small, ignore it
   if cv2.contourArea(c) < 500:
    continue
-  print('contour found')
-  coutour_found = True
-  # compute the bounding box for the contour
-  (x, y, w, h) = cv2.boundingRect(c)
-  print('x: {}, y: {}, w: {}, h: {}'.format(x, y, w, h))
-  # draw the bounding box on the frame
-  cv2.rectangle(contour_frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
- 
- if coutour_found:
+  return True
+
+while True:
+ coutour_found = False
+ previous_frame = current_frame
+ original_frame = capture_frame()
+ contour_frame = resize_frame(original_frame)
+ current_frame = process_frame(contour_frame)
+ if previous_frame is None:
+  continue
+ if has_movement(previous_frame, current_frame):
+  print('Movement detected')
   #Save the images
   folder = 'data/{}'.format(datetime.now().strftime('%Y%m%d%H%M%S%f'))
   os.makedirs(folder)
   cv2.imwrite('{}/0-original_frame.jpg'.format(folder), original_frame)
-  cv2.imwrite('{}/1-contour_frame.jpg'.format(folder), contour_frame)
-  cv2.imwrite('{}/2-current_frame.jpg'.format(folder), current_frame)
   cv2.imwrite('{}/3-previous_frame.jpg'.format(folder), previous_frame)
-  cv2.imwrite('{}/4-delta.jpg'.format(folder), delta)
-  cv2.imwrite('{}/5-threshold.jpg'.format(folder), threshold)
- 
