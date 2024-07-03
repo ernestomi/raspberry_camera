@@ -26,6 +26,7 @@ while True:
  coutour_found = False
  previous_frame = current_frame
  current_original_frame = capture_frame()
+ contour_frame = current_original_frame.copy()
  current_frame = process_frame(current_original_frame)
  if previous_frame is None:
   continue
@@ -52,15 +53,16 @@ while True:
   (x, y, w, h) = cv2.boundingRect(c)
   print('x: {}, y: {}, w: {}, h: {}'.format(x, y, w, h))
   # draw the bounding box on the frame
-  cv2.rectangle(current_original_frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+  cv2.rectangle(contour_frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
  
  if coutour_found:
   #Save the images
   folder = 'data/{}'.format(datetime.now().strftime('%Y%m%d%H%M%S%f'))
   os.makedirs(folder)
   cv2.imwrite('{}/0-original_frame.jpg'.format(folder), current_original_frame)
-  cv2.imwrite('{}/1-current_frame.jpg'.format(folder), current_frame)
-  cv2.imwrite('{}/2-previous_frame.jpg'.format(folder), previous_frame)
-  cv2.imwrite('{}/3-delta.jpg'.format(folder), delta)
-  cv2.imwrite('{}/4-threshold.jpg'.format(folder), threshold)
+  cv2.imwrite('{}/1-contour_frame.jpg'.format(folder), contour_frame)
+  cv2.imwrite('{}/2-current_frame.jpg'.format(folder), current_frame)
+  cv2.imwrite('{}/3-previous_frame.jpg'.format(folder), previous_frame)
+  cv2.imwrite('{}/4-delta.jpg'.format(folder), delta)
+  cv2.imwrite('{}/5-threshold.jpg'.format(folder), threshold)
  
