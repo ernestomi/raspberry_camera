@@ -39,12 +39,10 @@ def has_movement(previous_frame, current_frame):
   cv2.CHAIN_APPROX_SIMPLE
  )
  contours = imutils.grab_contours(contours)
- # loop over the contours
  for c in contours:
-  print(cv2.contourArea(c))
-  # if the contour is too small, ignore it
-  if cv2.contourArea(c) > 500:
-   return True
+  if cv2.contourArea(c) < 500:
+   continue
+  return True
 
 def has_faces(frame):
  faces = face_classifier.detectMultiScale(

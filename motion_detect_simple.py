@@ -28,8 +28,6 @@ def process_frame(frame):
 def has_movement(previous_frame, current_frame):
  delta = cv2.absdiff(previous_frame, current_frame)
  threshold = cv2.threshold(delta, 25, 255, cv2.THRESH_BINARY)[1]
- # dilate the thresholded image to fill in holes, then find contours
- # on thresholded image
  threshold = cv2.dilate(threshold, None, iterations=2)
  contours = cv2.findContours(
   threshold.copy(), 
@@ -37,9 +35,7 @@ def has_movement(previous_frame, current_frame):
   cv2.CHAIN_APPROX_SIMPLE
  )
  contours = imutils.grab_contours(contours)
- # loop over the contours
  for c in contours:
-  # if the contour is too small, ignore it
   if cv2.contourArea(c) < 500:
    continue
   return True
