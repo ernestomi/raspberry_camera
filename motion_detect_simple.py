@@ -10,16 +10,14 @@ picam2.start()
 
 current_frame = None
 
+
 def capture_frame():
  frame = picam2.capture_array()
  frame = cv2.rotate(frame, 0)
  return frame
 
-def resize_frame(frame):
+def process_frame_for_motion(frame):
  frame = imutils.resize(frame, width=500)
- return frame
-
-def process_frame(frame):
  # Grayscale and Blur
  gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
  gray = cv2.GaussianBlur(gray, (21, 21), 0)
@@ -43,8 +41,7 @@ def has_movement(previous_frame, current_frame):
 while True:
  previous_frame = current_frame
  original_frame = capture_frame()
- contour_frame = resize_frame(original_frame)
- current_frame = process_frame(contour_frame)
+ current_frame = process_frame_for_motion(original_frame)
  if previous_frame is None:
   continue
  if has_movement(previous_frame, current_frame):
