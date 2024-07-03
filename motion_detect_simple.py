@@ -15,9 +15,11 @@ def capture_frame():
  frame = cv2.rotate(frame, 0)
  return frame
 
-def process_frame(frame):
- # Resize
+def resize_frame(frame):
  frame = imutils.resize(frame, width=500)
+ return frame
+
+def process_frame(frame):
  # Grayscale and Blur
  gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
  gray = cv2.GaussianBlur(gray, (21, 21), 0)
@@ -26,9 +28,9 @@ def process_frame(frame):
 while True:
  coutour_found = False
  previous_frame = current_frame
- current_original_frame = capture_frame()
- contour_frame = current_original_frame.copy()
- current_frame = process_frame(current_original_frame)
+ original_frame = capture_frame()
+ contour_frame = resize_frame(original_frame)
+ current_frame = process_frame(contour_frame)
  if previous_frame is None:
   continue
  
@@ -60,7 +62,7 @@ while True:
   #Save the images
   folder = 'data/{}'.format(datetime.now().strftime('%Y%m%d%H%M%S%f'))
   os.makedirs(folder)
-  cv2.imwrite('{}/0-original_frame.jpg'.format(folder), current_original_frame)
+  cv2.imwrite('{}/0-original_frame.jpg'.format(folder), original_frame)
   cv2.imwrite('{}/1-contour_frame.jpg'.format(folder), contour_frame)
   cv2.imwrite('{}/2-current_frame.jpg'.format(folder), current_frame)
   cv2.imwrite('{}/3-previous_frame.jpg'.format(folder), previous_frame)
